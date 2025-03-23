@@ -1,0 +1,31 @@
+services:
+  dev-frontend:
+      image: dev-frontend
+      build:
+        context: ./frontend
+        dockerfile: dev.Dockerfile
+      volumes:
+        - ./frontend:/usr/src/app
+      container_name: dev-frontend
+
+  dev-backend:
+    image: dev-backend
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend:/usr/src/app
+    container_name: dev-backend
+    environment:
+      - MONGODB_URI=mongodb+srv://rafaelrojas36:papaya36720@cluster0.ptjey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      
+  nginx:
+      image: nginx:1.20.1
+      volumes:
+        - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      ports:
+        - 8000:80
+      container_name: reverse-proxy
+      depends_on:
+        - dev-frontend
+        - dev-backend

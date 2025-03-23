@@ -1,0 +1,6 @@
+POST http://localhost:3000/todos
+
+{
+    "text": "Testing task",
+    "done": false
+}
